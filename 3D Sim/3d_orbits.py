@@ -63,13 +63,8 @@ class Body(Entity):
     def change_acceleration(self):
         acceleration = Vec3(0,0,0)
         for body in bodies: # Calculate net gravitational acceleration of the body due to each other body
-            try:
-                displacement = Vec3(self.position-body.position)
-                distance = math.sqrt(dot_product(displacement,displacement))
-                delta_a = Vec3(displacement*GRAVITATIONAL_CONSTANT*body.mass/(distance**3))
-                acceleration = Vec3(acceleration-delta_a)
-            except:
-                continue
+            gravity = self.do_gravity(body)
+            acceleration = Vec3(acceleration+gravity)
         return acceleration
 
     def check_collision(self,body):
@@ -89,6 +84,15 @@ class Body(Entity):
         collision_multiplier = mass_fraction*dot_product(relative_velocity,displacement)/(distance**2)
         delta_v = Vec3(displacement*collision_multiplier)
         return delta_v
+
+    def do_gravity(self,body):
+        try:
+            displacement = Vec3(self.position-body.position)
+            distance = math.sqrt(dot_product(displacement,displacement))
+            gravitational_field = Vec3(-1*displacement*GRAVITATIONAL_CONSTANT*body.mass/(distance**3))
+            return gravitational_field
+        except:
+            return Vec3(0,0,0)
 
 def dot_product(vect1,vect2):
     return vect1[0]*vect2[0]+vect1[1]*vect2[1]+vect1[2]*vect2[2]
