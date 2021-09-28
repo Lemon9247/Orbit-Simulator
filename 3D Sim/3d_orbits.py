@@ -1,7 +1,9 @@
 from ursina import *
 import math
 
-GRAVITATIONAL_CONSTANT = 6.67*10
+GRAVITATIONAL_STRENGTH = 6.67*10
+ELECTRIC_STRENGTH = 8.854*(10**6)
+MAGNETIC_STRENGTH = 4*math.pi*(10**11)
 simulating = False  # Global variable used to pause/unpause the simulator
 
 app = Ursina()
@@ -44,9 +46,10 @@ class Spectator(Entity):
 
 class Body(Entity):
 # This class is used for physical bodies within the simulator.
-    def __init__(self, mass = 0.0, position = None, velocity = None, acceleration = None, colour = None):
+    def __init__(self, mass = 0.0, charge = 0.0, position = None, velocity = None, acceleration = None, colour = None):
         super().__init__(model="sphere")
         self.mass = mass
+        self.charge = charge
         self.position = Vec3(position) if position != None else Vec3(0,0,0)
         self.velocity = Vec3(velocity) if velocity != None else Vec3(0,0,0)
         self.acceleration = Vec3(acceleration) if acceleration != None else Vec3(0,0,0)
@@ -89,8 +92,15 @@ class Body(Entity):
         try:
             displacement = Vec3(self.position-body.position)
             distance = math.sqrt(dot_product(displacement,displacement))
-            gravitational_field = Vec3(-1*displacement*GRAVITATIONAL_CONSTANT*body.mass/(distance**3))
+            gravitational_field = Vec3(-1*displacement*GRAVITATIONAL_STRENGTH*body.mass/(distance**3))
             return gravitational_field
+        except:
+            return Vec3(0,0,0)
+
+    def do_electromagnetism(self,body):
+        try:
+            displacement = Vec3(self.position-body.position)
+            distance = math.sqrt(dot_product(displacement,displacement))
         except:
             return Vec3(0,0,0)
 
