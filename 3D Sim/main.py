@@ -11,6 +11,20 @@ window.fullscreen = True
 window.exit_button.visible = False
 window.fps_counter.enabled = True
 
+def do_collisions(bodies):
+    # Gets each body to check for collisions and run their collision methods. Return a list of the new velocities.
+    new_velocities = []
+    for body1 in bodies:
+        delta_v = Vec3(0,0,0)
+        for body2 in bodies:
+            if body1 == body2:
+                continue
+            if body1.check_collision(body2):
+                delta_v += body1.get_collision_velocity(body2)
+        new_vel = body1.velocity+delta_v
+        new_velocities.append(new_vel)
+    return new_velocities
+
 def update():
     # Main loop - runs continuously
     if simulating:
@@ -57,7 +71,6 @@ bodies.append(Body(mass=10,position=(0,0,80),velocity=(-100,20,0)))
 bodies.append(Body(mass=10000))
 bodies.append(Body(mass=500,position=(0,-40,0),velocity=(150,0,0)))
 bodies.append(Body(mass=20,position=(0,40,0),velocity=(0,-10,0)))
-Body(mass=50,position=(0,10,100))
 
 # Propogate velocities backwards by half a step for the Leapfrog Method
 for body in bodies:
