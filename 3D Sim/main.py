@@ -72,5 +72,11 @@ bodies.append(Body(mass=10000))
 bodies.append(Body(mass=500,position=(0,-40,0),velocity=(150,0,0)))
 bodies.append(Body(mass=20,position=(0,40,0),velocity=(0,-10,0)))
 
+# Propogate velocities backwards by half a step for the Leapfrog Method
+for body in bodies:
+    body.acceleration = body.change_acceleration()
+    delta_v = Vec3(body.acceleration*TIME_INTERVAL/2)
+    body.velocity = Vec3(body.velocity-delta_v)
+
 Spectator(speed=40)
 app.run()
