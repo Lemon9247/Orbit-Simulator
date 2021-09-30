@@ -71,17 +71,3 @@ class Body(Entity):
 
 def dot_product(vect1,vect2):
     return vect1[0]*vect2[0]+vect1[1]*vect2[1]+vect1[2]*vect2[2]
-
-def do_collisions(bodies):
-    # Gets each body to check for collisions and run their collision methods. Return a list of the new velocities.
-    new_velocities = []
-    for body1 in bodies:
-        delta_v = Vec3(0,0,0)
-        for body2 in bodies:
-            if body1 == body2:
-                continue
-            if body1.check_collision(body2):
-                delta_v += body1.get_collision_velocity(body2)
-        new_vel = body1.velocity+delta_v
-        new_velocities.append(new_vel)
-    return new_velocities
