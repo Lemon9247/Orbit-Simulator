@@ -21,6 +21,13 @@ class Body(Entity):
         self.diameter = 10*math.log(mass,10)
         self.scale = (self.diameter,self.diameter,self.diameter)
         self.color = colour if colour != None else color.random_color()
+        self.leapfrog_setup()
+
+    def leapfrog_setup(self):
+        # Propogate the body's state back by half a step for Leapfrog Integration
+        self.acceleration = self.change_acceleration()
+        delta_v = Vec3(self.acceleration*TIME_INTERVAL/2)
+        self.velocity = Vec3(self.velocity-delta_v)
 
     def change_position(self):
         return Vec3(self.position+self.velocity*TIME_INTERVAL)
