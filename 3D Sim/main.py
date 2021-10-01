@@ -12,7 +12,8 @@ window.exit_button.visible = False
 window.fps_counter.enabled = True
 
 def do_collisions(bodies):
-    # Gets each body to check for collisions and run their collision methods. Return a list of the new velocities.
+    # Gets each body to check for collisions and run their collision methods.
+    # Then returns a list of the new velocities
     new_velocities = []
     for body1 in bodies:
         delta_v = Vec3(0,0,0)
