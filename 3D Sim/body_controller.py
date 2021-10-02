@@ -1,9 +1,6 @@
 from ursina import *
 import math
 
-GRAVITATIONAL_STRENGTH = 6.67*10
-ELECTRIC_STRENGTH = 8.854*(10**6)
-MAGNETIC_STRENGTH = 4*math.pi*(10**11)
 TIME_INTERVAL = 0.001       # Time interval used for each simulation step
 
 class Body(Entity):
@@ -49,6 +46,7 @@ class Body(Entity):
         return delta_v
 
     def do_gravity(self,body):
+        GRAVITATIONAL_STRENGTH = 6.67*10
         try:
             displacement = Vec3(self.position-body.position)
             distance = math.sqrt(dot_product(displacement,displacement))
@@ -58,6 +56,8 @@ class Body(Entity):
             return Vec3(0,0,0)
 
     def do_electromagnetism(self,body):
+        ELECTRIC_STRENGTH = 8.854*(10**6)
+        MAGNETIC_STRENGTH = 4*math.pi*(10**11)
         try:
             displacement = Vec3(self.position-body.position)
             distance = math.sqrt(dot_product(displacement,displacement))
