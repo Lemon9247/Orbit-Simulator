@@ -6,9 +6,6 @@ ELECTRIC_STRENGTH = 8.854*(10**6)
 MAGNETIC_STRENGTH = 4*math.pi*(10**11)
 TIME_INTERVAL = 0.001       # Time interval used for each simulation step
 
-bodies = []     # All physical bodies are stored in a "bodies" list so they can easily access each other's data
-                # If a body is not added to this list, the simulator will ignore it
-
 class Body(Entity):
 # This class is used for physical bodies within the simulator.
     def __init__(self, mass = 0.0, charge = 0.0, position = None, velocity = None, acceleration = None, colour = None):
@@ -22,17 +19,15 @@ class Body(Entity):
         self.scale = (self.diameter,self.diameter,self.diameter)
         self.color = colour if colour != None else color.random_color()
 
-    def change_position(self):
+    def get_new_position(self):
         return Vec3(self.position+self.velocity*TIME_INTERVAL)
 
-    def change_velocity(self):
+    def get_new_velocity(self):
         return Vec3(self.velocity+self.acceleration*TIME_INTERVAL)
 
-    def change_acceleration(self):
-        acceleration = Vec3(0,0,0)
-        for body in bodies: # Calculate net gravitational acceleration of the body due to each other body
-            gravity = self.do_gravity(body)
-            acceleration = Vec3(acceleration+gravity)
+    def get_new_acceleration(self,body):
+        gravity = self.do_gravity(body)
+        acceleration = Vec3(gravity)
         return acceleration
 
     def check_collision(self,body):
