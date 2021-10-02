@@ -4,13 +4,6 @@ from body_controller import Body, TIME_INTERVAL
 
 simulating = False  # Global variable used to pause/unpause the simulator
 
-app = Ursina()
-window.title = "3D Orbital Simulator"
-window.borderless = False
-window.fullscreen = True
-window.exit_button.visible = False
-window.fps_counter.enabled = True
-
 bodies = []     # All physical bodies are stored in a "bodies" list so they can easily access each other's data
                 # If a body is not added to this list, the simulator will ignore it
 
@@ -79,17 +72,25 @@ def input(key):
         else:
             simulating = True
 
-# Initial Conditions
-bodies.append(Body(mass=10,position=(0,0,80),velocity=(-100,20,0)))
-bodies.append(Body(mass=10000))
-bodies.append(Body(mass=500,position=(0,-40,0),velocity=(150,0,0)))
-bodies.append(Body(mass=20,position=(0,40,0),velocity=(0,-10,0)))
+if __name__ == "__main__":
+    app = Ursina()
+    window.title = "3D Orbital Simulator"
+    window.borderless = False
+    window.fullscreen = True
+    window.exit_button.visible = False
+    window.fps_counter.enabled = True
 
-# Propogate velocities backwards by half a step for the Leapfrog Method
-for body in bodies:
-    body.acceleration = calculate_net_acceleration(body)
-    delta_v = Vec3(body.acceleration*TIME_INTERVAL/2)
-    body.velocity = Vec3(body.velocity-delta_v)
+    # Initial Conditions
+    bodies.append(Body(mass=10,position=(0,0,80),velocity=(-100,20,0)))
+    bodies.append(Body(mass=10000))
+    bodies.append(Body(mass=500,position=(0,-40,0),velocity=(150,0,0)))
+    bodies.append(Body(mass=20,position=(0,40,0),velocity=(0,-10,0)))
 
-Spectator(speed=40)
-app.run()
+    # Propogate velocities backwards by half a step for the Leapfrog Method
+    for body in bodies:
+        body.acceleration = calculate_net_acceleration(body)
+        delta_v = Vec3(body.acceleration*TIME_INTERVAL/2)
+        body.velocity = Vec3(body.velocity-delta_v)
+
+    Spectator(speed=40)
+    app.run()
