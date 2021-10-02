@@ -1,6 +1,6 @@
 from ursina import *
 from camera_controller import Spectator
-from body_controller import *
+from body_controller import Body, TIME_INTERVAL
 
 simulating = False  # Global variable used to pause/unpause the simulator
 
