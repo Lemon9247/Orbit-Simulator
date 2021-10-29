@@ -60,11 +60,9 @@ def input(key):
     if key == "escape": # Pause both simulation and camera. Also unlocks the mouse.
         if mouse.locked:
             mouse.locked = False
-            window.exit_button.visible = True
             simulating = False
         else:
             mouse.locked = True
-            window.exit_button.visible = False
             simulating = True
     if key == "p": # Pause/unpause simulation, but not the camera
         if simulating:
@@ -76,15 +74,19 @@ if __name__ == "__main__":
     app = Ursina()
     window.title = "3D Orbital Simulator"
     window.borderless = False
-    window.fullscreen = True
+    window.fullscreen = False
+    window.forced_aspect_ratio = 19/10
     window.exit_button.visible = False
     window.fps_counter.enabled = True
+    window.vsync = True
 
     # Initial Conditions
     bodies.append(Body(mass=10,position=(0,0,80),velocity=(-100,20,0)))
     bodies.append(Body(mass=10000))
     bodies.append(Body(mass=500,position=(0,-40,0),velocity=(150,0,0)))
     bodies.append(Body(mass=20,position=(0,40,0),velocity=(0,-10,0)))
+    for i in range(100):
+        bodies.append(Body(mass=10,position=(50*i+50,0,0)))
 
     # Propogate velocities backwards by half a step for the Leapfrog Method
     for body in bodies:
