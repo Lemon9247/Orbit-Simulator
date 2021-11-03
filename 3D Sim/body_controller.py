@@ -1,5 +1,6 @@
 from ursina import *
 import math
+import numpy as np
 
 TIME_INTERVAL = 0.001       # Time interval used for each simulation step
 
