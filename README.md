@@ -1,5 +1,5 @@
 # Orbit-Simulator
- Simple orbit simulators written in python. The 2D version makes use of pygame and the 3D version makes use of ursina.
+ Simple orbit simulators written in python, for my 2nd year programming project. The 2D version makes use of pygame and the 3D version makes use of ursina.
 
 Installation:
 1) Clone this repo
